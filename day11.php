@@ -1,19 +1,24 @@
 <?php
-// read the adapters from file 
+ 
 $content = trim(file_get_contents(__DIR__.'/input/day11/input.txt')," \n");
-
 $lines = explode("\n",$content);
-
-$grid = [];
-$grid_old = [];
-$grid_org = [];
 
 $rows = count($lines);
 $columns = strlen($lines[0]);
 
+$grid = [];
+// load the text file into a bi-dimensional array
+for ($j=0;$j<$rows;$j++) {
+    $grid[$j] = str_split($lines[$j]);
+}
+// keep a copy for part 2
+$grid_org = $grid;
+
+$grid_old = [];
+
 $directions = [[-1,-1], [0,-1], [1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]];
 
-// mode = false : just the first cell around position, if true keep looking
+// mode = false : just the first cell around position, if true keep looking until chair found or outside area
 function getCellType($x,$y,$direction,$mode=FALSE) {
     global $grid, $rows,$columns;
     $continue = true; 
@@ -75,14 +80,6 @@ function work($scan_mode,$chairs_min = 4) {
     echo "Seats   used : ". strlen(str_replace(["\n","L","."],['','',''],$snapshot_curr))."\n";
 
 }
-
-
-// load the text file into a bi-dimensional array
-for ($j=0;$j<$rows;$j++) {
-    $grid[$j] = str_split($lines[$j]);
-}
-// keep a copy for part 2
-$grid_org = $grid;
 
 // part 1
 $result = work(false,4);
