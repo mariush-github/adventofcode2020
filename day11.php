@@ -44,6 +44,40 @@ function snapshot($grid) {
     }
     return $data;
 }
+
+function work($scan_mode,$chairs_min = 4) {
+    global $grid,$rows,$columns,$directions; 
+
+    $grid_new = $grid; 
+    $snapshot_prev = '';
+    $snapshot_curr = snapshot($grid);
+
+    while ($snapshot_curr != $snapshot_prev) {
+        $snapshot_prev = $snapshot_curr;
+        for ($j=0;$j<$rows;$j++) {
+            for ($i=0;$i<$columns;$i++) {
+                $grid_new[$j][$i] = $grid[$j][$i];
+                $chairs_used = 0;
+                for ($k=0;$k<8;$k++) {
+                    $cellt = getCellType($i,$j,$directions[$k],$scan_mode);
+                    if ($cellt=='#')  $chairs_used++;
+                }
+                if (($grid[$j][$i]=='L') && ($chairs_used==0)) $grid_new[$j][$i] = '#';
+                if (($grid[$j][$i]=='#') && ($chairs_used>=$chairs_min)) $grid_new[$j][$i] = 'L';            
+            }
+        }
+        $snapshot_curr = snapshot($grid_new);
+        $grid = $grid_new;
+        //echo $snapshot_curr."\n";
+    }
+
+    echo "Seats unused : ". strlen(str_replace(["\n","#","."],['','',''],$snapshot_curr))."\n";
+    echo "Seats   used : ". strlen(str_replace(["\n","L","."],['','',''],$snapshot_curr))."\n";
+
+}
+
+
+// load the text file into a bi-dimensional array
 for ($j=0;$j<$rows;$j++) {
     $grid[$j] = str_split($lines[$j]);
 }
@@ -51,61 +85,9 @@ for ($j=0;$j<$rows;$j++) {
 $grid_org = $grid;
 
 // part 1
-
-$grid_new = $grid; 
-$snapshot_prev = '';
-$snapshot_curr = snapshot($grid);
-
-while ($snapshot_curr != $snapshot_prev) {
-    $snapshot_prev = $snapshot_curr;
-    for ($j=0;$j<$rows;$j++) {
-        for ($i=0;$i<$columns;$i++) {
-            $grid_new[$j][$i] = $grid[$j][$i];
-            $chairs_used = 0;
-            for ($k=0;$k<8;$k++) {
-                $cellt = getCellType($i,$j,$directions[$k],false);
-                if ($cellt=='#')  $chairs_used++;
-            }
-            if (($grid[$j][$i]=='L') && ($chairs_used==0)) $grid_new[$j][$i] = '#';
-            if (($grid[$j][$i]=='#') && ($chairs_used>=4)) $grid_new[$j][$i] = 'L';            
-        }
-    }
-    $snapshot_curr = snapshot($grid_new);
-    $grid = $grid_new;
-    //echo $snapshot_curr."\n";
-}
-
-echo "Seats unused : ". strlen(str_replace(["\n","#","."],['','',''],$snapshot_curr))."\n";
-echo "Seats   used : ". strlen(str_replace(["\n","L","."],['','',''],$snapshot_curr))."\n";
-
-// part 2 , same as part 1 but with TRUE parameter in getCellType and different number for chairs_used
-
+$result = work(false,4);
+// part 2
 $grid = $grid_org;
-
-$grid_new = $grid; 
-$snapshot_prev = '';
-$snapshot_curr = snapshot($grid);
-
-while ($snapshot_curr != $snapshot_prev) {
-    $snapshot_prev = $snapshot_curr;
-    for ($j=0;$j<$rows;$j++) {
-        for ($i=0;$i<$columns;$i++) {
-            $grid_new[$j][$i] = $grid[$j][$i];
-            $chairs_used = 0;
-            for ($k=0;$k<8;$k++) {
-                $cellt = getCellType($i,$j,$directions[$k],true);
-                if ($cellt=='#')  $chairs_used++;
-            }
-            if (($grid[$j][$i]=='L') && ($chairs_used==0)) $grid_new[$j][$i] = '#';
-            if (($grid[$j][$i]=='#') && ($chairs_used>=5)) $grid_new[$j][$i] = 'L';            
-        }
-    }
-    $snapshot_curr = snapshot($grid_new);
-    $grid = $grid_new;
-    //echo $snapshot_curr."\n";
-}
-echo "Seats unused : ". strlen(str_replace(["\n","#","."],['','',''],$snapshot_curr))."\n";
-echo "Seats   used : ". strlen(str_replace(["\n","L","."],['','',''],$snapshot_curr))."\n";
-
+$result = work(true,5);
 
 ?>
