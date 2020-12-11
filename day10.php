@@ -26,6 +26,16 @@ for ($i=0;$i<$adaptersCount;$i++) {
 }
 echo "1-dif = $dif_one , 3-dif = $dif_three , multiplied = ".($dif_one*$dif_three)."\n";
 
+$adapters_indexed[] = 0;
+sort($adapters_indexed);
+$arr = array(1);
+
+for($i=0;$i<count($adapters_indexed);$i++)
+	for($j=0;$j<$i;$j++)
+		if($adapters_indexed[$i] - $adapters_indexed[$j] <= 3)
+			@$arr[$i] += @$arr[$j];
+
+echo "Combinations: " . $arr[count($adapters_indexed)-1] . "\n";
 die();
 
 
