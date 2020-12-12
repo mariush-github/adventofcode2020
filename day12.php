@@ -99,6 +99,4 @@ foreach ($commands as $command) {
 
 echo "X= $x Y= $y W_X = $w_x W_Y = $w_y\n";
 echo "result = ".(abs($x) + abs($y))."\n";
-
-
 ?>
