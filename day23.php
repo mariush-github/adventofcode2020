@@ -1,22 +1,5 @@
 <?php
 
-// $cups = [];
-// $code = '389125467';
-// for ($i=0;$i<10;$i++) {
-	// $cup = array('value'=>intval(substr($code,$i,1)), 'next' => $i+1, 'prev' => $i-1);
-	// array_push($cups,$cup);
-// }
-// $cups[0]['prev'] = count($cups)-1;
-// $cups[count($cups)-1]['next'] = 0;
-
-// echo json_encode($cups,JSON_PRETTY_PRINT);
-
-// $cup = 0;
-// test example 
-
-//$cups = new CircularBuffer('389125467');
-
-
 $cups = new CircularBuffer('364297581');
 
 $moveCounter = 1;
