@@ -1,5 +1,5 @@
 <?php
-$content = trim(file_get_contents(__DIR__ .'/input/day04/input.txt'),"\n");
+$content = trim(file_get_contents(__DIR__ .'/input/day24/input.txt'),"\n");
 $lines = explode("\n",$content);
 
 $blacktiles = 0;
